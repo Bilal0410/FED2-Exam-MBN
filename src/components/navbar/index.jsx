@@ -10,13 +10,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-blue-900 p-5">
+    <nav className="bg-white-900 p-5 border-b-4">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
         {/* Logo on the left */}
         <div>
           <Link
             to="/"
-            className="text-white text-lg lg:text-4xl font-extrabold tracking-tight"
+            className="text-black Times text-lg lg:text-4xl font-extrabold tracking-tight"
           >
             Sold n´Bought
           </Link>
@@ -29,9 +29,9 @@ export default function Navbar() {
             className="text-white focus:outline-none text-transparent"
           >
             <div className="space-y-1.5">
-              <div className="w-6 h-0.5 bg-white"></div>
-              <div className="w-6 h-0.5 bg-white"></div>
-              <div className="w-6 h-0.5 bg-white"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
             </div>
           </button>
         </div>
@@ -46,7 +46,7 @@ export default function Navbar() {
             <Link
               key={item.href}
               to={item.href}
-              className="text-white hover:text-gray-300 transition duration-300"
+              className="text-black Times hover:text-black-900 hover:border-b transition duration-300"
             >
               {item.label}
             </Link>
