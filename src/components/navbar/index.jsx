@@ -9,6 +9,10 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <nav className="bg-white-900 p-5 border-b-4">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
@@ -16,6 +20,7 @@ export default function Navbar() {
         <div>
           <Link
             to="/"
+            onClick={closeMenu}
             className="text-black Times text-lg lg:text-4xl font-extrabold tracking-tight"
           >
             Sold n´Bought
@@ -46,6 +51,7 @@ export default function Navbar() {
             <Link
               key={item.href}
               to={item.href}
+              onClick={closeMenu}
               className="text-black Times hover:text-black-900 hover:border-b transition duration-300"
             >
               {item.label}
