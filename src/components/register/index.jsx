@@ -141,7 +141,7 @@ function RegisterForm() {
                   id="avatar"
                   name="avatar"
                   type="url"
-                  className="block w-full text-sm text-black file:mr-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                  className="bg-white block w-full text-sm text-black border-2 file:mr-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
                 />
               </div>
             </div>

@@ -153,7 +153,7 @@ function LoginForm() {
         <p className="mt-10 text-sm text-center text-gray-500">
           Not a member?{" "}
           <a
-            href="/pages/register"
+            href="/register"
             className="font-semibold leading-6 text-custom-aqua hover:text-bg-blue-900"
           >
             Register here

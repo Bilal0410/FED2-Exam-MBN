@@ -69,6 +69,7 @@ function CreateListing() {
             tags: listingData.tags.split(",").map((tag) => tag.trim()), // Convert tags to array
             media: mediaURLs, // Use validated media URLs
             endsAt: isoFormattedDate, // Use the formatted date without milliseconds
+            created: new Date().toISOString(), // Set the created field to the current date
           }),
         }
       );
@@ -114,7 +115,7 @@ function CreateListing() {
             name="title"
             value={listingData.title}
             onChange={handleInputChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="bg-white text-black mt-1 p-2 w-full border rounded-md"
             required
           />
         </div>
@@ -131,7 +132,7 @@ function CreateListing() {
             name="description"
             value={listingData.description}
             onChange={handleInputChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="bg-white text-black mt-1 p-2 w-full border rounded-md"
             rows="4"
           />
         </div>
@@ -149,7 +150,7 @@ function CreateListing() {
             name="tags"
             value={listingData.tags}
             onChange={handleInputChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="bg-white text-black mt-1 p-2 w-full border rounded-md"
           />
         </div>
 
@@ -166,7 +167,7 @@ function CreateListing() {
             name="media"
             value={listingData.media}
             onChange={handleInputChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="bg-white text-black mt-1 p-2 w-full border rounded-md"
           />
         </div>
 
@@ -183,7 +184,7 @@ function CreateListing() {
             name="endsAt"
             value={listingData.endsAt}
             onChange={handleInputChange}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="bg-white text-black mt-1 p-2 w-full border rounded-md"
             required
           />
         </div>
