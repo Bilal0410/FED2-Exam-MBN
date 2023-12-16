@@ -6,3 +6,4 @@ export const registerUser = async (userData) => {
       delete userData.avatar;
     }
 };
+
