@@ -23,3 +23,13 @@ The CreateListing component does the job of helping users add new listings easil
 After successfully creating a listing, the user can go to the listing page and see the listing made next to other users listings. An error message will occur when user tries to bid on listings made by the user or other listing which has a bid amount higher than what the user tries to bid. To be able to see all the listings made by the user you can go to the profile page and find them there.
 
 In this collection of React code snippets, the application comes to life with a seamless user experience. The `ProfilePage` component serves as the users hub, displaying their details and auction listings. It skillfully retrieves user data from local storage and communicates with the server to fetch and present their listings. The `LoginForm` and `RegisterForm` components handle user authentication, ensuring a secure and smooth onboarding process. User can register, log in, and subsequently access their personalized `ProfilePage`. Additionally, the `CreateListing` component let users to effortlessly contribute new listings, implementing real-time validation and feedback. Together, these components weave a friendly and well connected web application, providing users with a fluid journey from registration to listing creation and interaction with their profile. The code displays thoughtful consideration for user interactions, data validation, and effective communication with the server, resulting in a well-rounded and user-friendly application.
+
+Sources and links:
+
+Noroff API Documentation - https://docs.noroff.dev/
+
+Figma link - https://www.figma.com/file/uJAeLdhiXNEgLnqq5gZJUd/Semester-Project-2?type=design&node-id=0%3A1&mode=design&t=kinIBZNTfy3eR0xR-1
+
+Github link - https://github.com/Bilal0410/semester-project2-MBN
+
+Netlify link - https://effulgent-marzipan-101baa.netlify.app/
