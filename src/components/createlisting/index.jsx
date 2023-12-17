@@ -121,7 +121,9 @@ function CreateListing() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Create New Listing</h1>
+      <h1 className="text-2xl font-bold mb-4 text-black text-center">
+        Create New Listing
+      </h1>
       <form>
         <div className="mb-4">
           <label

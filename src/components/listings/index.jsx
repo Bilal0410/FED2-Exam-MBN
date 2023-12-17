@@ -137,7 +137,7 @@ function AllListings() {
                 handleBidSubmit(listing.id);
               }}
             >
-              <label>
+              <label className="text-black">
                 Bid Amount:
                 <input
                   type="number"

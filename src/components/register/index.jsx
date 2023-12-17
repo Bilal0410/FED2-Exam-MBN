@@ -6,6 +6,7 @@ function RegisterForm() {
   const [error, setError] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
+  const [avatarError, setAvatarError] = useState("");
 
   const navigateToHome = () => {
     setTimeout(() => {
@@ -42,6 +43,13 @@ function RegisterForm() {
 
     if (!validatePassword(password.value)) {
       fieldErrors.password = "Password must be at least 8 characters.";
+    }
+
+    if (!avatar.value.trim()) {
+      fieldErrors.avatar = "Avatar is required.";
+      setAvatarError("Avatar is required.");
+    } else {
+      setAvatarError("");
     }
 
     if (Object.keys(fieldErrors).length > 0) {
@@ -144,8 +152,10 @@ function RegisterForm() {
                   className="bg-white block w-full text-sm text-black border-2 file:mr-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
                 />
               </div>
+              {avatarError && (
+                <p className="text-red-500 text-xs mt-2">{avatarError}</p>
+              )}
             </div>
-
             <div>
               <label
                 htmlFor="email"

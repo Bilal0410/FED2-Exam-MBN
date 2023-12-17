@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 function ProfilePage() {
   const [listings, setListings] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [userCredits, setUserCredits] = useState(0);
   const [userAvatar, setUserAvatar] = useState("");
@@ -65,6 +65,39 @@ function ProfilePage() {
       });
   }, []);
 
+  const updateAvatar = (newAvatarUrl) => {
+    const apiUrl = `https://api.noroff.dev/api/v1/auction/profiles/${userName}/media`;
+
+    fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify({
+        avatar: newAvatarUrl,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(`Failed to update avatar. Status: ${response.status}`);
+          throw new Error("Avatar update failed.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Update the local state and storage with the new avatar URL
+        setUserAvatar(data.avatar);
+        localStorage.setItem("user_avatar", data.avatar);
+
+        // Set a success message
+        setAvatarChangeSuccess(true);
+      })
+      .catch((error) => {
+        console.error("Error updating avatar:", error);
+      });
+  };
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -76,17 +109,14 @@ function ProfilePage() {
 
   const handleChangeAvatar = () => {
     const newAvatar = newAvatarUrl || "https://example.com/default-avatar.jpg";
-
-    setUserAvatar(newAvatar);
-    localStorage.setItem("user_avatar", newAvatar);
-
-    setAvatarChangeSuccess(true);
+    updateAvatar(newAvatar);
 
     closeModal();
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded shadow-md">
+    <div className="max-w-md mx-auto p-4 bg-white text-black rounded shadow-md">
+      <h1 className="text-2xl font-bold text-center">Profile Page</h1>
       <div className="flex items-center mb-4">
         <img
           src={userAvatar}
@@ -126,7 +156,7 @@ function ProfilePage() {
           ))}
         </div>
       ) : (
-        <p>No listings available.</p>
+        <p className="text-black">No listings available.</p>
       )}
 
       {avatarChangeSuccess && (
