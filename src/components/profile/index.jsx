@@ -116,7 +116,7 @@ function ProfilePage() {
 
   return (
     <div className="max-w-md mx-auto p-4 bg-white text-black rounded shadow-md">
-      <h1 className="text-2xl font-bold text-center">Profile Page</h1>
+      <h1 className="text-2xl font-bold text-center p-2">Profile Page</h1>
       <div className="flex items-center mb-4">
         <img
           src={userAvatar}

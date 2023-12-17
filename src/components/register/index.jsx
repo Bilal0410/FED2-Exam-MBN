@@ -97,7 +97,7 @@ function RegisterForm() {
   return (
     <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-custom lg:px-8 card w-full max-w-[100%] h-[700px] md:h-auto glass">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white p-8 rounded-md shadow-md border-2">
-        <img className="w-auto h-10 mx-auto" src="" alt="" />
+        <img className="w-auto h-2 mx-auto" src="" alt="" />
         <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-black">
           Make a new account
         </h2>
