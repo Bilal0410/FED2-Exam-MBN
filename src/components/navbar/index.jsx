@@ -10,11 +10,9 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if user is logged in
     const accessToken = localStorage.getItem("access_token");
     setIsLoggedIn(!!accessToken);
 
-    // Retrieve user details from local storage
     const storedUserName = localStorage.getItem("user_name");
     const storedUserCredits = localStorage.getItem("user_credits");
     const storedUserAvatar = localStorage.getItem("user_avatar");
@@ -42,7 +40,6 @@ export default function Navbar() {
   return (
     <nav className="bg-black p-4">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
-        {/* Logo on the left */}
         <div>
           <Link
             to="/"
@@ -52,7 +49,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* User Info and Avatar in the middle if logged in */}
         {userName && (
           <div className="hidden lg:flex items-center">
             <img
@@ -67,7 +63,6 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Hamburger icon for small screens on the right */}
         <div className="lg:hidden ml-auto">
           <button
             onClick={toggleMenu}
@@ -81,7 +76,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Navbar links for larger screens and centered for small screens */}
         <div
           className={`lg:flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 ${
             isOpen ? "flex flex-col items-center" : "hidden"

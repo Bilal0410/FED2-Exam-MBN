@@ -118,12 +118,14 @@ function AllListings() {
         {filterListings(auctionListings).map((listing) => (
           <div
             key={listing.id}
-            className="bg-white-100 p-4 rounded-md border-4 border-black"
+            className="bg-white-100 p-4 rounded-md border-4 border-black overflow-hidden"
           >
-            <h1 className="text-2xl font-bold mb-2 text-black">
+            <h1 className="text-2xl font-bold mb-2 text-black overflow-hidden">
               {listing.title}
             </h1>
-            <p className="text-gray-700 mb-4">{listing.description}</p>
+            <p className="text-gray-700 mb-4 overflow-hidden">
+              {listing.description}
+            </p>
             <p className="text-gray-600">
               Ends at: {new Date(listing.endsAt).toLocaleString()}
             </p>

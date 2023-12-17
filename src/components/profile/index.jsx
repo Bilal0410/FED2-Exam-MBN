@@ -11,7 +11,6 @@ function ProfilePage() {
   const [avatarChangeSuccess, setAvatarChangeSuccess] = useState(false);
 
   useEffect(() => {
-    // Retrieve user details from local storage
     const storedUserName = localStorage.getItem("user_name");
     const storedUserCredits = localStorage.getItem("user_credits");
     const storedUserAvatar = localStorage.getItem("user_avatar");
@@ -24,22 +23,18 @@ function ProfilePage() {
   }, []);
 
   useEffect(() => {
-    // Retrieve the username from local storage
     const userName = localStorage.getItem("user_name");
 
-    // Ensure that userName is not null or undefined
     if (!userName) {
       console.error("No user name found in local storage.");
       setLoading(false);
       return;
     }
 
-    // Fetch listings for the specific user
     fetch(
       `https://api.noroff.dev/api/v1/auction/profiles/${userName}/listings`,
       {
         headers: {
-          // Include your authentication token here
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       }
@@ -86,11 +81,9 @@ function ProfilePage() {
         return response.json();
       })
       .then((data) => {
-        // Update the local state and storage with the new avatar URL
         setUserAvatar(data.avatar);
         localStorage.setItem("user_avatar", data.avatar);
 
-        // Set a success message
         setAvatarChangeSuccess(true);
       })
       .catch((error) => {
@@ -177,9 +170,7 @@ function ProfilePage() {
             </span>
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-md">
               <div className="sm:flex sm:items-start">
-                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                  {/* Icon or something can be added here */}
-                </div>
+                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10"></div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <h3
                     className="text-lg leading-6 font-medium text-gray-900"

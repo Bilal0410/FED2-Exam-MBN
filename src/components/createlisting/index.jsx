@@ -25,7 +25,7 @@ function CreateListing() {
       ...listingData,
       [name]: value,
     });
-    // Clear the error message when the user starts typing again
+
     setErrors({
       ...errors,
       [name]: "",
@@ -37,7 +37,6 @@ function CreateListing() {
       const formattedDate = new Date(listingData.endsAt);
       const currentDate = new Date();
 
-      // Validate endsAt
       if (
         formattedDate < currentDate ||
         formattedDate > currentDate.setFullYear(currentDate.getFullYear() + 1)
@@ -49,7 +48,6 @@ function CreateListing() {
         return;
       }
 
-      // Validate media URLs
       const mediaURLs = listingData.media.split(",").map((url) => url.trim());
       if (mediaURLs.some((url) => !isValidURL(url))) {
         setErrors({
@@ -58,8 +56,6 @@ function CreateListing() {
         });
         return;
       }
-
-      // Other validation code...
 
       const accessToken = localStorage.getItem("access_token");
 
@@ -74,28 +70,28 @@ function CreateListing() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`, // Include the access token
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             title: listingData.title,
             description: listingData.description,
-            tags: listingData.tags.split(",").map((tag) => tag.trim()), // Convert tags to array
-            media: mediaURLs, // Use validated media URLs
-            endsAt: formattedDate.toISOString().split(".")[0], // Use the formatted date without milliseconds
-            created: new Date().toISOString(), // Set the created field to the current date
+            tags: listingData.tags.split(",").map((tag) => tag.trim()),
+            media: mediaURLs,
+            endsAt: formattedDate.toISOString().split(".")[0],
+            created: new Date().toISOString(),
           }),
         }
       );
 
       if (response.ok) {
         setSuccessMessage("Listing created successfully!");
-        // Reset the form or redirect the user after successful creation
+
         setListingData({
           title: "",
           description: "",
           tags: "",
           media: "",
-          endsAt: new Date().toISOString().split(".")[0], // Remove milliseconds for the default value
+          endsAt: new Date().toISOString().split(".")[0],
         });
       } else {
         const errorData = await response.json();
@@ -111,7 +107,6 @@ function CreateListing() {
     }
   };
 
-  // Helper function to check if a URL is valid
   function isValidURL(url) {
     const urlPattern = new RegExp(
       /^(https?:\/\/)?((www\.)?[\w-]+(\.[a-z]{2,})+|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{2,5})?(\/\S*)?$/i
@@ -219,14 +214,12 @@ function CreateListing() {
           {errors.endsAt && <div className="text-red-500">{errors.endsAt}</div>}
         </div>
 
-        {/* Display error messages */}
         {Object.values(errors).some((error) => error !== "") && (
           <div className="text-red-500 mb-4">
             Please fix the errors before submitting the form.
           </div>
         )}
 
-        {/* Display success message */}
         {successMessage && (
           <div className="text-green-500 mb-4">{successMessage}</div>
         )}
