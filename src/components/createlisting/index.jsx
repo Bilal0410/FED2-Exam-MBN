@@ -9,11 +9,26 @@ function CreateListing() {
     endsAt: new Date().toISOString().split(".")[0],
   });
 
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    tags: "",
+    media: "",
+    endsAt: "",
+  });
+
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setListingData({
       ...listingData,
       [name]: value,
+    });
+    // Clear the error message when the user starts typing again
+    setErrors({
+      ...errors,
+      [name]: "",
     });
   };
 
@@ -27,32 +42,30 @@ function CreateListing() {
         formattedDate < currentDate ||
         formattedDate > currentDate.setFullYear(currentDate.getFullYear() + 1)
       ) {
-        console.error("Invalid date for 'endsAt'");
-        return;
-      }
-
-      const isoFormattedDate = formattedDate.toISOString().split(".")[0];
-
-      const accessToken = localStorage.getItem("access_token");
-
-      if (!accessToken) {
-        console.error("Access token not found in local storage");
+        setErrors({
+          ...errors,
+          endsAt: "Invalid date for 'endsAt'",
+        });
         return;
       }
 
       // Validate media URLs
       const mediaURLs = listingData.media.split(",").map((url) => url.trim());
       if (mediaURLs.some((url) => !isValidURL(url))) {
-        console.error("Invalid media URL format");
+        setErrors({
+          ...errors,
+          media: "Invalid media URL format",
+        });
         return;
       }
 
-      // eslint-disable-next-line no-inner-declarations
-      function isValidURL(url) {
-        const urlPattern = new RegExp(
-          /^(https?:\/\/)?((www\.)?[\w-]+(\.[a-z]{2,})+|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{2,5})?(\/\S*)?$/i
-        );
-        return urlPattern.test(url.trim());
+      // Other validation code...
+
+      const accessToken = localStorage.getItem("access_token");
+
+      if (!accessToken) {
+        console.error("Access token not found in local storage");
+        return;
       }
 
       const response = await fetch(
@@ -68,14 +81,14 @@ function CreateListing() {
             description: listingData.description,
             tags: listingData.tags.split(",").map((tag) => tag.trim()), // Convert tags to array
             media: mediaURLs, // Use validated media URLs
-            endsAt: isoFormattedDate, // Use the formatted date without milliseconds
+            endsAt: formattedDate.toISOString().split(".")[0], // Use the formatted date without milliseconds
             created: new Date().toISOString(), // Set the created field to the current date
           }),
         }
       );
 
       if (response.ok) {
-        console.log("Listing created successfully!");
+        setSuccessMessage("Listing created successfully!");
         // Reset the form or redirect the user after successful creation
         setListingData({
           title: "",
@@ -98,6 +111,14 @@ function CreateListing() {
     }
   };
 
+  // Helper function to check if a URL is valid
+  function isValidURL(url) {
+    const urlPattern = new RegExp(
+      /^(https?:\/\/)?((www\.)?[\w-]+(\.[a-z]{2,})+|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{2,5})?(\/\S*)?$/i
+    );
+    return urlPattern.test(url.trim());
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create New Listing</h1>
@@ -118,6 +139,7 @@ function CreateListing() {
             className="bg-white text-black mt-1 p-2 w-full border rounded-md"
             required
           />
+          {errors.title && <div className="text-red-500">{errors.title}</div>}
         </div>
 
         <div className="mb-4">
@@ -135,6 +157,9 @@ function CreateListing() {
             className="bg-white text-black mt-1 p-2 w-full border rounded-md"
             rows="4"
           />
+          {errors.description && (
+            <div className="text-red-500">{errors.description}</div>
+          )}
         </div>
 
         <div className="mb-4">
@@ -152,6 +177,7 @@ function CreateListing() {
             onChange={handleInputChange}
             className="bg-white text-black mt-1 p-2 w-full border rounded-md"
           />
+          {errors.tags && <div className="text-red-500">{errors.tags}</div>}
         </div>
 
         <div className="mb-4">
@@ -169,6 +195,7 @@ function CreateListing() {
             onChange={handleInputChange}
             className="bg-white text-black mt-1 p-2 w-full border rounded-md"
           />
+          {errors.media && <div className="text-red-500">{errors.media}</div>}
         </div>
 
         <div className="mb-4">
@@ -187,13 +214,26 @@ function CreateListing() {
             className="bg-white text-black mt-1 p-2 w-full border rounded-md"
             required
           />
+          {errors.endsAt && <div className="text-red-500">{errors.endsAt}</div>}
         </div>
+
+        {/* Display error messages */}
+        {Object.values(errors).some((error) => error !== "") && (
+          <div className="text-red-500 mb-4">
+            Please fix the errors before submitting the form.
+          </div>
+        )}
+
+        {/* Display success message */}
+        {successMessage && (
+          <div className="text-green-500 mb-4">{successMessage}</div>
+        )}
 
         <div className="mb-4">
           <button
             type="button"
             onClick={handleCreateListing}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className="bg-black text-white px-4 py-2 rounded-md"
           >
             Create Listing
           </button>

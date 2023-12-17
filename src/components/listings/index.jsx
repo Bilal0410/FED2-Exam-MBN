@@ -118,7 +118,7 @@ function AllListings() {
         {filterListings(auctionListings).map((listing) => (
           <div
             key={listing.id}
-            className="bg-white-100 p-4 rounded-md border-4"
+            className="bg-white-100 p-4 rounded-md border-4 border-black"
           >
             <h1 className="text-2xl font-bold mb-2 text-black">
               {listing.title}
@@ -154,7 +154,7 @@ function AllListings() {
               </label>
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
+                className="bg-black text-white px-4 py-2 rounded-md ml-2"
               >
                 Place Bid
               </button>

@@ -1,46 +1,87 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function ProfilePage() {
-  // Retrieve values from local storage
-  const userCredits = localStorage.getItem("user_credits");
-  const storedUserName = localStorage.getItem("user_name");
-  const storedUserAvatar = localStorage.getItem("user_avatar");
-
-  // State variables for user information
-  const [userName, setUserName] = useState(storedUserName);
-  const [userAvatar, setUserAvatar] = useState(storedUserAvatar);
-
-  // State variables for modal and change avatar functionality
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState("");
+  const [userCredits, setUserCredits] = useState(0);
+  const [userAvatar, setUserAvatar] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
   const [avatarChangeSuccess, setAvatarChangeSuccess] = useState(false);
 
-  // Function to open the modal
+  useEffect(() => {
+    // Retrieve user details from local storage
+    const storedUserName = localStorage.getItem("user_name");
+    const storedUserCredits = localStorage.getItem("user_credits");
+    const storedUserAvatar = localStorage.getItem("user_avatar");
+
+    if (storedUserName && storedUserCredits && storedUserAvatar) {
+      setUserName(storedUserName);
+      setUserCredits(storedUserCredits);
+      setUserAvatar(storedUserAvatar);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Retrieve the username from local storage
+    const userName = localStorage.getItem("user_name");
+
+    // Ensure that userName is not null or undefined
+    if (!userName) {
+      console.error("No user name found in local storage.");
+      setLoading(false);
+      return;
+    }
+
+    // Fetch listings for the specific user
+    fetch(
+      `https://api.noroff.dev/api/v1/auction/profiles/${userName}/listings`,
+      {
+        headers: {
+          // Include your authentication token here
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.error("Unauthorized. Please log in.");
+          } else {
+            console.error(`Request failed with status: ${response.status}`);
+          }
+          throw new Error("API request failed.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setListings(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);
+
   const openModal = () => {
     setModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setModalOpen(false);
-    // Clear the newAvatarUrl when closing the modal
     setNewAvatarUrl("");
   };
 
-  // Function to handle avatar change
   const handleChangeAvatar = () => {
-    // Perform any necessary logic to change the avatar URL
-    // For demonstration purposes, let's update the avatar URL with a new value
     const newAvatar = newAvatarUrl || "https://example.com/default-avatar.jpg";
 
-    // Update the state and local storage
     setUserAvatar(newAvatar);
     localStorage.setItem("user_avatar", newAvatar);
 
-    // Display success message
     setAvatarChangeSuccess(true);
 
-    // Close the modal after changing the avatar
     closeModal();
   };
 
@@ -59,11 +100,39 @@ function ProfilePage() {
         </div>
       </div>
 
+      {listings.length > 0 ? (
+        <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-4 py-6 px-4">
+          {listings.map((listing) => (
+            <div
+              key={listing.id}
+              className="bg-white p-6 rounded-md border-2 border-black"
+            >
+              <img
+                className="mt-4"
+                src={listing.media[0]}
+                alt={listing.title}
+              />
+              <a href={`/listings/?id=${listing.id}`}>
+                <h1 className="text-2xl font-bold mb-2 text-black overflow-hidden whitespace-nowrap text-overflow-ellipsis">
+                  {listing.title}
+                </h1>
+              </a>
+              <p className="text-gray-700 mb-4">{listing.description}</p>
+              <p className="text-gray-600">
+                Ends at: {new Date(listing.endsAt).toLocaleString()}
+              </p>
+              <p className="text-gray-600">Bids: {listing._count.bids}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>No listings available.</p>
+      )}
+
       {avatarChangeSuccess && (
         <p className="text-green-500 mt-2">Avatar changed successfully!</p>
       )}
 
-      {/* Modal for changing avatar */}
       {isModalOpen && (
         <div className="fixed inset-0 z-10 overflow-y-auto">
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

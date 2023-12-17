@@ -87,7 +87,7 @@ function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-custom lg:px-8 card w-full max-w-[100%] h-[300px] md:h-auto glass">
+    <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-custom lg:px-8 card w-full max-w-[100%] h-[700px] md:h-auto glass">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white p-8 rounded-md shadow-md border-2">
         <img className="w-auto h-10 mx-auto" src="" alt="" />
         <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-black">
@@ -202,7 +202,7 @@ function RegisterForm() {
               <button
                 disabled={isLoading}
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-custom-aqua px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm bg-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-custom-aqua px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {isLoading ? "Registering" : "Register"}
               </button>
@@ -214,7 +214,7 @@ function RegisterForm() {
           Already a member?{" "}
           <a
             href="/login"
-            className="font-semibold leading-6 text-custom-aqua hover:text-bg-blue-900"
+            className="font-semibold leading-6 text-custom-aqua text-black"
           >
             Sign in
           </a>
