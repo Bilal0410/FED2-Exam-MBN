@@ -5,5 +5,4 @@ export const NAVIGATION = [
   { label: "Home", href: "/" },
   { label: "Profile", href: "/profile" },
   { label: "Create Listing", href: "/createlisting" },
-  { label: "Login", href: "/login" },
 ];

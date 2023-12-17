@@ -48,7 +48,7 @@ export default function Navbar() {
             to="/"
             className="text-white text-lg lg:text-3xl font-extrabold tracking-tight"
           >
-            Auction House
+            SellOrBuy.no
           </Link>
         </div>
 
