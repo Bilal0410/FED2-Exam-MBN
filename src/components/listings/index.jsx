@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 
 function AllListings() {
   const [auctionListings, setAuctionListings] = useState([]);
-  const [filteredAuctionListings, setFilteredAuctionListings] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [refreshData, setRefreshData] = useState(false);
   const [bidAmounts, setBidAmounts] = useState({});
+  const [selectedListingId, setSelectedListingId] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchDataAndResetRefresh = async () => {
       try {
-        // Retrieve the access token from local storage
         const accessToken = localStorage.getItem("access_token");
 
         const response = await fetch(
@@ -28,7 +29,6 @@ function AllListings() {
             (a, b) => new Date(b.created) - new Date(a.created)
           );
           setAuctionListings(sortedListings);
-          setFilteredAuctionListings(sortedListings);
         } else {
           console.error("Error fetching data:", response.status);
         }
@@ -40,19 +40,6 @@ function AllListings() {
 
     fetchDataAndResetRefresh();
   }, [refreshData]);
-
-  const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-
-    const filteredListings = auctionListings.filter(
-      (listing) =>
-        listing.title.toLowerCase().includes(query) ||
-        listing.description.toLowerCase().includes(query)
-    );
-
-    setFilteredAuctionListings(filteredListings);
-  };
 
   const handleBidSubmit = async (listingId) => {
     try {
@@ -73,12 +60,10 @@ function AllListings() {
       if (response.ok) {
         console.log("Bid placed successfully!");
 
-        // Retrieve current user credits from local storage
         const currentUserCredits = JSON.parse(
           localStorage.getItem("user_credits") || "0"
         );
 
-        // Update user credits and set it back to local storage
         const updatedUserCredits =
           currentUserCredits - (Number(bidAmounts[listingId]) || 0);
         localStorage.setItem(
@@ -86,28 +71,51 @@ function AllListings() {
           JSON.stringify(updatedUserCredits)
         );
 
+        setSuccessMessage("Bid placed successfully!");
+        setErrorMessage("");
         setRefreshData(true);
       } else {
         const errorData = await response.json();
         console.error("Error submitting bid:", response.status, errorData);
+        setErrorMessage("Error submitting bid. Please try again.");
+        setSuccessMessage("");
       }
     } catch (error) {
       console.error("Error submitting bid:", error);
+      setErrorMessage("Error submitting bid. Please try again.");
+      setSuccessMessage("");
     }
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filterListings = (listings) => {
+    return listings.filter(
+      (listing) =>
+        (listing.title &&
+          listing.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (listing.description &&
+          listing.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
   };
 
   return (
     <div className="container mx-auto p-4">
-      <input
-        type="text"
-        placeholder="Search through listings..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="bg-white text-black p-2 mb-4 border rounded-md"
-      />
-
+      <div>
+        <label>
+          <input
+            type="text"
+            placeholder="Search through listings..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="bg-white text-black ml-2 border rounded-md p-1"
+          />
+        </label>
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        {filteredAuctionListings.map((listing) => (
+        {filterListings(auctionListings).map((listing) => (
           <div
             key={listing.id}
             className="bg-white-100 p-4 rounded-md border-4"
@@ -125,6 +133,7 @@ function AllListings() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                setSelectedListingId(listing.id);
                 handleBidSubmit(listing.id);
               }}
             >
@@ -150,6 +159,14 @@ function AllListings() {
                 Place Bid
               </button>
             </form>
+
+            {selectedListingId === listing.id && successMessage && (
+              <p className="text-green-500 mt-2">{successMessage}</p>
+            )}
+
+            {selectedListingId === listing.id && errorMessage && (
+              <p className="text-red-500 mt-2">{errorMessage}</p>
+            )}
           </div>
         ))}
       </div>
